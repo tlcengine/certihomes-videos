@@ -3,13 +3,16 @@ import { InvestorPitch } from "./compositions/InvestorPitch";
 import { EducationExplainer } from "./compositions/EducationExplainer";
 import { ProductDemo } from "./compositions/ProductDemo";
 import { DataViz } from "./compositions/DataViz";
+import { ListingVideo } from "./compositions/ListingVideo";
+import { MarketReport } from "./compositions/MarketReport";
+import { SocialClip } from "./compositions/SocialClip";
 
 const FPS = 30;
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      {/* === Investor Pitch (202s) === */}
+      {/* ====== INVESTOR PITCH (202s) ====== */}
       <Composition
         id="InvestorPitch"
         component={InvestorPitch}
@@ -29,7 +32,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ layout: "vertical" as const }}
       />
 
-      {/* === Education Explainer (60s) — TikTok/Reels vertical === */}
+      {/* ====== DEMO COMPOSITIONS ====== */}
       <Composition
         id="EducationExplainer"
         component={EducationExplainer}
@@ -38,8 +41,6 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
       />
-
-      {/* === Product Demo (45s) — YouTube/presentation landscape === */}
       <Composition
         id="ProductDemo"
         component={ProductDemo}
@@ -48,8 +49,6 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
       />
-
-      {/* === Data Visualization Dashboard (45s) === */}
       <Composition
         id="DataViz"
         component={DataViz}
@@ -57,6 +56,38 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={1920}
         height={1080}
+      />
+
+      {/* ====== REAL CONTENT TEMPLATES ====== */}
+
+      {/* Property Listing Video — 30s vertical for agent social media */}
+      <Composition
+        id="ListingVideo"
+        component={ListingVideo}
+        durationInFrames={30 * FPS}
+        fps={FPS}
+        width={1080}
+        height={1920}
+      />
+
+      {/* Weekly Market Report — 45s vertical for social media */}
+      <Composition
+        id="MarketReport"
+        component={MarketReport}
+        durationInFrames={45 * FPS}
+        fps={FPS}
+        width={1080}
+        height={1920}
+      />
+
+      {/* Social Clip — 15s vertical quick-hit stats */}
+      <Composition
+        id="SocialClip"
+        component={SocialClip}
+        durationInFrames={15 * FPS}
+        fps={FPS}
+        width={1080}
+        height={1920}
       />
     </>
   );

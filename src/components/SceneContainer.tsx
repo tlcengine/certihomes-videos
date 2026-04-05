@@ -60,7 +60,7 @@ export const SceneContainer: React.FC<{
       style={{
         width: "100%",
         height: "100%",
-        background: typeGradients[scene.type],
+        background: "transparent",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

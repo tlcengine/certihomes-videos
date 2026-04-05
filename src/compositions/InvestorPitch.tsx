@@ -10,7 +10,10 @@ import {
 } from "remotion";
 import { theme } from "../lib/theme";
 import { scenes } from "../lib/scenes";
+import { pitchCaptions } from "../lib/captions";
 import { SceneContainer } from "../components/SceneContainer";
+import { SceneBackground } from "../components/SceneBackground";
+import { CaptionOverlay } from "../components/Captions";
 import {
   AnimatedTitle,
   AnimatedSubtitle,
@@ -85,7 +88,7 @@ export const InvestorPitch: React.FC<{ layout: "landscape" | "vertical" }> = ({
         </span>
       </div>
 
-      {/* Scenes */}
+      {/* Scenes with FLUX backgrounds */}
       {scenes.map((scene) => {
         const startFrame = Math.round(scene.startSec * fps);
         const durationFrames = Math.round((scene.endSec - scene.startSec) * fps);
@@ -106,6 +109,14 @@ export const InvestorPitch: React.FC<{ layout: "landscape" | "vertical" }> = ({
           </Sequence>
         );
       })}
+
+      {/* Whisper-synced captions overlay */}
+      <CaptionOverlay
+        captions={pitchCaptions}
+        position={isVertical ? "bottom" : "bottom"}
+        fontSize={isVertical ? 26 : 32}
+        showBackground={true}
+      />
 
       {/* Progress bar */}
       <ProgressBar />
@@ -131,53 +142,64 @@ const SceneRenderer: React.FC<{
     : Math.round(24 * scale);
 
   return (
-    <SceneContainer
-      scene={scene}
-      localFrame={localFrame}
-      durationFrames={durationFrames}
-    >
-      {/* Title */}
-      <AnimatedTitle
-        text={scene.title}
-        fontSize={titleSize}
-        color={
-          scene.type === "cta"
-            ? theme.white
-            : scene.type === "metric"
-            ? theme.accent
-            : theme.white
-        }
+    <div style={{ width: "100%", height: "100%", position: "relative" }}>
+      {/* FLUX-generated background with Ken Burns effect */}
+      <SceneBackground
+        sceneType={scene.type}
+        localFrame={localFrame}
+        durationFrames={durationFrames}
+        overlayOpacity={0.5}
       />
 
-      {/* Subtitle */}
-      {scene.subtitle && (
-        <AnimatedSubtitle
-          text={scene.subtitle}
-          fontSize={subtitleSize}
-          delay={10}
+      {/* Scene content (text, bullets, stats) */}
+      <SceneContainer
+        scene={scene}
+        localFrame={localFrame}
+        durationFrames={durationFrames}
+      >
+        {/* Title */}
+        <AnimatedTitle
+          text={scene.title}
+          fontSize={titleSize}
           color={
-            scene.type === "cta" ? "rgba(255,255,255,0.8)" : theme.textMuted
+            scene.type === "cta"
+              ? theme.white
+              : scene.type === "metric"
+              ? theme.accent
+              : theme.white
           }
         />
-      )}
 
-      {/* Stat callout */}
-      {scene.stat && (
-        <AnimatedStat
-          value={scene.stat.value}
-          label={scene.stat.label}
-          delay={14}
-        />
-      )}
+        {/* Subtitle */}
+        {scene.subtitle && (
+          <AnimatedSubtitle
+            text={scene.subtitle}
+            fontSize={subtitleSize}
+            delay={10}
+            color={
+              scene.type === "cta" ? "rgba(255,255,255,0.8)" : theme.textMuted
+            }
+          />
+        )}
 
-      {/* Bullet points */}
-      {scene.bullets && (
-        <AnimatedBullets
-          items={scene.bullets}
-          delay={scene.stat ? 30 : 16}
-          fontSize={Math.round(24 * scale)}
-        />
-      )}
-    </SceneContainer>
+        {/* Stat callout */}
+        {scene.stat && (
+          <AnimatedStat
+            value={scene.stat.value}
+            label={scene.stat.label}
+            delay={14}
+          />
+        )}
+
+        {/* Bullet points */}
+        {scene.bullets && (
+          <AnimatedBullets
+            items={scene.bullets}
+            delay={scene.stat ? 30 : 16}
+            fontSize={Math.round(24 * scale)}
+          />
+        )}
+      </SceneContainer>
+    </div>
   );
 };
