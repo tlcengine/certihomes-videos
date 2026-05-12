@@ -1,0 +1,3 @@
+[submodule "tools/claude-sidebar-extension"]
+	path = tools/claude-sidebar-extension
+	url = https://github.com/tlcengine/claude-sidebar-extension.git
